@@ -54,6 +54,7 @@ async function run() {
         await client.connect()
         const bookCollection = client.db("BabuBhai").collection('Inventories')
         app.get("/inventory", async (req, res) => {
+            // console.log('inside inventory')
             const query = {}
             const cursor = bookCollection.find(query)
             const result = await cursor.toArray()
@@ -65,10 +66,26 @@ async function run() {
             const cursor = await bookCollection.findOne(query)
             res.send(cursor)
         });
-
-
-
+        app.put('/inventory/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateQuantity = req.body;
+            console.log('hii')
+            console.log(updateQuantity)
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                   quantity: updateQuantity.quantity
+                }
+            };
+            const result = await bookCollection.updateOne(filter, updateDoc, options)
+            res.send(result)
+        })
     }
+    
+
+
+    
     finally {
 
     }
