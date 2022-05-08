@@ -60,6 +60,42 @@ async function run() {
             const result = await cursor.toArray()
             res.send(result)
         })
+        app.post("/inventory", async (req, res) => {
+            // console.log('inside inventory')
+            //console.log(req);
+           const doc=req.body;
+           const result = await bookCollection.insertOne(doc);
+            // const query = {}
+            // const cursor = bookCollection.find(query)
+            // const result = await cursor.toArray()
+            res.send(result)
+        })
+        app.delete("/inventory", async (req, res) => {
+            // console.log('inside inventory')
+            //console.log(req);
+           const doc=req.body.id;
+           console.log(req.body.id);
+           const query = {_id:ObjectId(`${doc}`)};
+           //const result = await bookCollection.insertOne(doc);
+            // const query = {}
+            const cursor = bookCollection.deleteOne(query);
+            // console.log(cursor);
+            //const result = await bookCollection.deleteOne(cursor);
+            // const result = await cursor.toArray()
+           res.send(cursor)
+        })
+        app.post("/myitems", async (req, res) => {
+            // console.log('inside inventory')
+            //console.log(req);
+           //const doc=req.body;
+           //const result = await bookCollection.insertOne(doc);
+           //const result='added'
+            // const query = {}
+            // const cursor = bookCollection.find(query)
+            // const result = await cursor.toArray()
+            res.send('hello')
+        })
+       
         app.get("/inventory/:id", async (req, res) => {
             const id = req.params.id
             const query = { _id: ObjectId(id) }
